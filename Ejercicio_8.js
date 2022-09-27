@@ -737,7 +737,7 @@ if (reversed == null) { reversed = false; }
 	this.txt_fruit_needed = new cjs.Text("41 frutillas", "22px 'Carton Six'", "#FF00FF");
 	this.txt_fruit_needed.name = "txt_fruit_needed";
 	this.txt_fruit_needed.lineHeight = 27;
-	this.txt_fruit_needed.lineWidth = 103;
+	this.txt_fruit_needed.lineWidth = 112;
 	this.txt_fruit_needed.parent = this;
 	this.txt_fruit_needed.setTransform(391.8,179.25);
 
@@ -3366,6 +3366,12 @@ if (reversed == null) { reversed = false; }
 		esc_2.visible = false;
 		esc_3.visible = false;
 		
+		var apples_to_collect = getRandomInt(1,25);
+		var pears_to_collect = getRandomInt(1,30);
+		var oranges_to_collect = getRandomInt(1,35);
+		var strawberries_to_collect = getRandomInt(1,40);
+		var peaches_to_collect = getRandomInt(1,50); 
+		
 		var g1 = esc_2.fruit_groups.group1;				 
 		var g2 = esc_2.fruit_groups.group2;
 		var g3 = esc_2.fruit_groups.group3;				 
@@ -3388,7 +3394,8 @@ if (reversed == null) { reversed = false; }
 		var number_of_peaches_left = 0;
 		var remaining_fruits = [number_of_apples_left, number_of_pears_left, number_of_oranges_left, number_of_strawberries_left, number_of_peaches_left];
 		
-		var fruit_needed = ['17 MANZANAS', '28 PERAS', '16 NARANJAS', '33 FRUTILLAS', '41 DURAZNOS'];
+		var fruit_needed = [`${apples_to_collect} MANZANAS`, `${pears_to_collect} PERAS`, `${oranges_to_collect} NARANJAS`, `${strawberries_to_collect} FRUTILLAS`, `${peaches_to_collect} DURAZNOS`];
+		//var fruit_needed = ['17 MANZANAS', '28 PERAS', '16 NARANJAS', '33 FRUTILLAS', '41 DURAZNOS'];
 		var fruit_questions = ['¿CUÁNTAS MANZANAS\nQUEDARON?', '¿CUÁNTAS PERAS\nQUEDARON?', '¿CUÁNTAS NARANJAS\nQUEDARON?', '¿CUÁNTAS FRUTILLAS\nQUEDARON?', '¿CUÁNTAS DURAZNOS\nQUEDARON?'];
 		var fruit_names = ['MANZANAS', 'PERAS', 'NARANJAS', 'FRUTILLAS', 'DURAZNOS'];
 		
@@ -3403,6 +3410,12 @@ if (reversed == null) { reversed = false; }
 		var min = 7;
 		var time;
 		var timer;
+		
+		function getRandomInt(min, max) {
+			min = Math.ceil(min);
+			max = Math.floor(max);
+			return Math.floor(Math.random() * (max - min + 1)) + min;
+		}
 		
 		function setListeners() {
 			
@@ -3671,11 +3684,11 @@ if (reversed == null) { reversed = false; }
 		
 		function feedback(){
 			
-			var apples = 18;
-			var pears = 12;
-			var oranges = 29;
-			var strawberries = 27;
-			var peaches = 25;
+			var apples = 35 - apples_to_collect;
+			var pears = 40 - pears_to_collect;
+			var oranges = 45 - oranges_to_collect;
+			var strawberries = 60 - strawberries_to_collect;
+			var peaches = 66 - peaches_to_collect;
 			
 			var pass = 0;
 				
@@ -3683,23 +3696,23 @@ if (reversed == null) { reversed = false; }
 			console.log(number_of_apples_left + ' ' + number_of_pears_left + ' ' + number_of_oranges_left + ' ' + number_of_strawberries_left + ' ' + number_of_peaches_left);
 			console.log(moved_apples.length + ' ' + moved_pears.length + ' ' + moved_oranges.length + ' ' + moved_strawberries.length + ' ' + moved_peaches.length);
 			
-			if ( apples == number_of_apples_left && moved_apples.length == 17 ){
+			if ( apples == number_of_apples_left && moved_apples.length == apples_to_collect ){
 				pass++;
 			}
 			
-			if ( pears == number_of_pears_left && moved_pears.length == 28 ){
+			if ( pears == number_of_pears_left && moved_pears.length == pears_to_collect ){
 				pass++;
 			}
 			
-			if ( oranges == number_of_oranges_left && moved_oranges.length == 16 ){
+			if ( oranges == number_of_oranges_left && moved_oranges.length == oranges_to_collect ){
 				pass++;
 			}
 			
-			if ( strawberries == number_of_strawberries_left && moved_strawberries.length == 33){
+			if ( strawberries == number_of_strawberries_left && moved_strawberries.length == strawberries_to_collect){
 				pass++;
 			}
 			
-			if ( peaches == number_of_peaches_left && moved_peaches.length == 41 ){
+			if ( peaches == number_of_peaches_left && moved_peaches.length == peaches_to_collect ){
 				pass++;
 			}
 			
@@ -3831,6 +3844,48 @@ if (reversed == null) { reversed = false; }
 				}
 				else 
 				{
+					let itemIndex;
+					
+					if (order_number == 0){
+						
+						if (moved_apples.includes(item.name)){					
+							itemIndex = moved_apples.indexOf(item.name);
+							moved_apples.splice(itemIndex, 1);					
+							esc_2.fruit_counting.txt.text = `${moved_apples.length} ${fruit_names[order_number]}`;
+						}
+					}
+					else if ( order_number == 1 ){
+						
+						if (moved_pears.includes(item.name)){
+							itemIndex = moved_pears.indexOf(item.name);
+							moved_pears.splice(itemIndex, 1);
+							esc_2.fruit_counting.txt.text = `${moved_pears.length} ${fruit_names[order_number]}`;
+						}
+					}
+					else if (order_number == 2 ){
+						
+						if (moved_oranges.includes(item.name)){
+							itemIndex = moved_oranges.indexOf(item.name);
+							moved_oranges.splice(itemIndex, 1);
+							esc_2.fruit_counting.txt.text = `${moved_oranges.length} ${fruit_names[order_number]}`;
+						}
+					}
+					else if ( order_number == 3 ){
+						
+						if (moved_strawberries.includes(item.name)){
+							itemIndex = moved_strawberries.indexOf(item.name);
+							moved_strawberries.splice(itemIndex, 1);
+							esc_2.fruit_counting.txt.text = `${moved_strawberries.length} ${fruit_names[order_number]}`;
+						}
+					}
+					else if ( order_number == 4 ) {
+						
+						if (moved_peaches.includes(item.name)){
+							itemIndex = moved_peaches.indexOf(item.name);
+							moved_peaches.splice(itemIndex, 1);
+							esc_2.fruit_counting.txt.text = `${moved_peaches.length} ${fruit_names[order_number]}`;
+						}
+					}
 					item.x = item.originX;
 					item.y = item.originY;
 				}
@@ -3900,37 +3955,37 @@ lib.properties = {
 	color: "#FFFFFF",
 	opacity: 1.00,
 	manifest: [
-		{src:"images/borde.png?1663801625343", id:"borde"},
-		{src:"images/btn_.png?1663801625343", id:"btn_"},
-		{src:"images/btn_g.png?1663801625343", id:"btn_g"},
-		{src:"images/btn_mas.png?1663801625343", id:"btn_mas"},
-		{src:"images/btn_menos.png?1663801625343", id:"btn_menos"},
-		{src:"images/canasta_1.png?1663801625343", id:"canasta_1"},
-		{src:"images/canasta_2.png?1663801625343", id:"canasta_2"},
-		{src:"images/cursor.png?1663801625343", id:"cursor"},
-		{src:"images/destellos1.png?1663801625343", id:"destellos1"},
-		{src:"images/destellos2.png?1663801625343", id:"destellos2"},
-		{src:"images/durazno.png?1663801625343", id:"durazno"},
-		{src:"images/fndo_btns.png?1663801625343", id:"fndo_btns"},
-		{src:"images/fondo_E1.jpg?1663801625343", id:"fondo_E1"},
-		{src:"images/fondo_escenario2.jpg?1663801625343", id:"fondo_escenario2"},
-		{src:"images/fresa.png?1663801625343", id:"fresa"},
-		{src:"images/gallo.png?1663801625343", id:"gallo"},
-		{src:"images/ind.png?1663801625343", id:"ind"},
-		{src:"images/manzana.png?1663801625343", id:"manzana"},
-		{src:"images/naranja.png?1663801625343", id:"naranja"},
-		{src:"images/naranja2.png?1663801625343", id:"naranja2"},
-		{src:"images/niña.png?1663801625343", id:"niña"},
-		{src:"images/nota_fin.png?1663801625343", id:"nota_fin"},
-		{src:"images/pera.png?1663801625343", id:"pera"},
-		{src:"images/rayitos1.png?1663801625343", id:"rayitos1"},
-		{src:"images/rayitos2.png?1663801625344", id:"rayitos2"},
-		{src:"images/soga_ind.png?1663801625344", id:"soga_ind"},
-		{src:"images/temp.png?1663801625344", id:"temp"},
-		{src:"images/tprobzoder.png?1663801625344", id:"tprobzoder"},
-		{src:"images/tprobzoizq.png?1663801625344", id:"tprobzoizq"},
-		{src:"images/tprocbza.png?1663801625344", id:"tprocbza"},
-		{src:"images/tprocrpo.png?1663801625344", id:"tprocrpo"}
+		{src:"images/borde.png?1664320911638", id:"borde"},
+		{src:"images/btn_.png?1664320911638", id:"btn_"},
+		{src:"images/btn_g.png?1664320911638", id:"btn_g"},
+		{src:"images/btn_mas.png?1664320911638", id:"btn_mas"},
+		{src:"images/btn_menos.png?1664320911638", id:"btn_menos"},
+		{src:"images/canasta_1.png?1664320911638", id:"canasta_1"},
+		{src:"images/canasta_2.png?1664320911638", id:"canasta_2"},
+		{src:"images/cursor.png?1664320911638", id:"cursor"},
+		{src:"images/destellos1.png?1664320911638", id:"destellos1"},
+		{src:"images/destellos2.png?1664320911638", id:"destellos2"},
+		{src:"images/durazno.png?1664320911638", id:"durazno"},
+		{src:"images/fndo_btns.png?1664320911638", id:"fndo_btns"},
+		{src:"images/fondo_E1.jpg?1664320911638", id:"fondo_E1"},
+		{src:"images/fondo_escenario2.jpg?1664320911638", id:"fondo_escenario2"},
+		{src:"images/fresa.png?1664320911638", id:"fresa"},
+		{src:"images/gallo.png?1664320911638", id:"gallo"},
+		{src:"images/ind.png?1664320911638", id:"ind"},
+		{src:"images/manzana.png?1664320911638", id:"manzana"},
+		{src:"images/naranja.png?1664320911638", id:"naranja"},
+		{src:"images/naranja2.png?1664320911638", id:"naranja2"},
+		{src:"images/niña.png?1664320911638", id:"niña"},
+		{src:"images/nota_fin.png?1664320911638", id:"nota_fin"},
+		{src:"images/pera.png?1664320911638", id:"pera"},
+		{src:"images/rayitos1.png?1664320911638", id:"rayitos1"},
+		{src:"images/rayitos2.png?1664320911638", id:"rayitos2"},
+		{src:"images/soga_ind.png?1664320911638", id:"soga_ind"},
+		{src:"images/temp.png?1664320911638", id:"temp"},
+		{src:"images/tprobzoder.png?1664320911638", id:"tprobzoder"},
+		{src:"images/tprobzoizq.png?1664320911638", id:"tprobzoizq"},
+		{src:"images/tprocbza.png?1664320911638", id:"tprocbza"},
+		{src:"images/tprocrpo.png?1664320911638", id:"tprocrpo"}
 	],
 	preloads: []
 };
